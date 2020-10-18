@@ -78,5 +78,39 @@ export default {
                }
           },
      },
+     methods: {
+          set_flg: function() {
+               if(this.find_flgd_flg || this.sel_flg != false) {
+                    this.find_flg= false;
+                    this.sel_flg = false;
+                    this.title = "";
+                    this.content = "";
+               }
+          },
+          insert: function() {
+               this.$store.commit('memo/insert',{title:this.title,content:this.content});
+          },
+          remove: function() {
+               if (this.sel_flg == false) {
+                    return;
+               } else {
+                    this.$store.commit('memo/remove',this.sel_flg);
+                    this.sel_flg();
+               }
+          },
+          find: function() {
+               this.sel_flg == false;
+               this.find_flg == true;
+          },
+          next: function() {
+               this.page ++;
+          },
+          prev: function() {
+               this.page --;
+          },
+          created: function() {
+               this.$store.commit.('memo/set_page',0);
+          },
+     }
 }
 </script>
