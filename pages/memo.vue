@@ -2,32 +2,32 @@
      <section class="container">
           <h1>Memo</h1>
           <table>
-          <tr>
-               <th>Title</th>
-               <td><input type="text" name="title" class="title" size="40" v-model="title" @focus="set_flg"></td>
-               <button @click="find">Find</button>
-          </tr>
-          <tr>
-               <th>Memo</th>
-               <td><textarea name="content" class="content" cols="50" rows="5" v-model="content"></textarea></td>
-          </tr>
-          <tr>
-               <th></th>
-               <td><button @click="insert">save</button>
-               <transition name="del">
-                    <button @click="remove">delete</button>
-               </transition></td>
-          </tr>
+               <tr>
+                    <th>Title</th>
+                    <td><input type="text" name="title" class="title" size="40" v-model="title" @focus="set_flg"></td>
+                    <button @click="find">Find</button>
+               </tr>
+               <tr>
+                    <th>Memo</th>
+                    <td><textarea name="content" class="content" cols="50" rows="5" v-model="content"></textarea></td>
+               </tr>
+               <tr>
+                    <th></th>
+                    <td><button @click="insert">save</button>
+                    <transition name="del">
+                         <button @click="remove">delete</button>
+                    </transition></td>
+               </tr>
           </table>
           <hr>
           <ul class="list">
-               <li v-foreach="item in page_items">
+               <li v-for="item in page_items">
                     <span @click="select(item)">{{ item.title }}({{item.created}})</span>
                </li>
           </ul>
           <hr>
           <div class="nav">
-               <span @click="prev">$lt;Prev</span>|<span @click="next">next&gt;</span>
+               <span @click="prev">&lt;Prev</span>|<span @click="next">next&gt;</span>
           </div>
      </section>
 </template>
@@ -80,7 +80,7 @@ export default {
      },
      methods: {
           set_flg: function() {
-               if(this.find_flgd_flg || this.sel_flg != false) {
+               if(this.find_flg || this.sel_flg != false) {
                     this.find_flg= false;
                     this.sel_flg = false;
                     this.title = "";
@@ -90,12 +90,18 @@ export default {
           insert: function() {
                this.$store.commit('memo/insert',{title:this.title,content:this.content});
           },
+          select: function(item) {
+               this.find_flg = false;
+               this.sel_flg = item;
+               this.title = item.title;
+               this.content = item.content;
+          },
           remove: function() {
                if (this.sel_flg == false) {
                     return;
                } else {
                     this.$store.commit('memo/remove',this.sel_flg);
-                    this.sel_flg();
+                    this.set_flg();
                }
           },
           find: function() {
@@ -109,7 +115,7 @@ export default {
                this.page --;
           },
           created: function() {
-               this.$store.commit.('memo/set_page',0);
+               this.$store.commit('memo/set_page',0);
           },
      }
 }

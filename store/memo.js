@@ -21,9 +21,9 @@ export const mutations = {
           var num = 0;
           for (let i = 0; i < state.memo.length; i++) {
                const ob = state.memo[i];
-               if(ob.title == obj.titile && ob.content == obj.content && ob.created == obj.created) {
-                    alert('remove it!! --' + ob.titile);
-                    state.memo.split(i,1);
+               if(ob.title == obj.title && ob.content == obj.content && ob.created == obj.created) {
+                    alert('remove it!! --' + obj.title);
+                    state.memo.splice(i,1);
                     return;
                }
           }
